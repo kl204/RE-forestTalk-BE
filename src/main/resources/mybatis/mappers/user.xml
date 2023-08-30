@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+    <resultMap id="userMap" type="UserVO">
+        <id property="useq" column="u_seq"></id>
+        <result property="uname" column="u_name"/>
+        <result property="uemail" column="u_email"/>
+        <result property="uid" column="u_id"/>
+        <result property="upw" column="u_pwd"/>
+        <result property="unick" column="u_nickname"/>
+        <result property="ubirth" column="u_birth"/>
+    </resultMap>
+
+<!--회원가입 로그인 쿼리-->
+    <select id="duplicateIdChk" parameterType="UserVO" resultType="int">
+        SELECT count(*) as cnt
+        FROM user
+        WHERE u_id = #{uid}
+    </select>
+
+    <select id="insertUserInfo" parameterType="UserVO">
+        INSERT INTO user (u_name, u_email, u_id, u_pwd, u_nickname, u_birth)
+        VALUES (#{uname}, #{uemail}, #{uid}, #{upw}, #{unick}, #{ubirth})
+    </select>
+
+    <select id="GetUserInfo" parameterType="int" resultType="UserVO">
+        SELECT u_name, u_email, u_id, u_pwd, u_nickname, u_birth
+        FROM user
+        WHERE u_seq = #{useq}
+    </select>
+
+    <select id="idPassCheck" resultMap="userMap" parameterType="String" resultType="UserVO">
+        SELECT u_id, u_pwd
+        FROM user
+        WHERE u_id = #{uid}
+    </select>
+
+</mapper>

@@ -1,0 +1,77 @@
+# active spring boot profile
+spring:
+  profiles:
+    active: dev
+
+---
+# common - spring configuration
+spring:
+  # devtools - live reload
+  devtools:
+    livereload:
+      enabled: true
+
+  # mvc
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+
+  jpa:
+    hibernate:
+      ddl-auto: validate #
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+
+---
+# dev profile - spring boot configuration
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  # datasource
+  datasource:
+    username: root
+    password: Rlatjsrb10!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://springbootdb.ckwyhhagz0nl.ap-northeast-2.rds.amazonaws.com:3306/forestdb
+#      jdbc:mysql://1.177.113.51:5651/foresttalk?ssl=false?characterEncoding=utf8
+#      username: root
+#      password: 1234
+#      driver-class-name: com.mysql.cj.jdbc.Driver
+#      jdbc:mysql://localhost:3306/testdb?ssl=false?characterEncoding=utf8
+
+---
+##mybatis
+mybatis:
+  config-location: classpath:mybatis/configuration.xml
+  
+---
+spring: 
+  servlet:
+    multipart:
+      max-file-size: 10MB 
+      max-request-size: 10MB
+      location: C:\ProgramData\Jenkins\.jenkins\workspace\file
+      
+---
+# server
+server:
+   #address: 0.0.0.0
+   port: 8080
+   servlet:
+     context-path: /
+     encoding:
+        charset: utf-8
+        enabled: true
+        force: false
+        force-request: false
+        force-response: false
+        
+# 0816 김선규 log.debug 로그 레벨 설정 추가
+logging:
+  level:
+    <bitedu.bipa.forestTalk>: DEBUG

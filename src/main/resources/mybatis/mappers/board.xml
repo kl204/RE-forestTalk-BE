@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+	<resultMap id="boardMap" type="boardVo">
+		<id property="bSeq" column="b_seq"></id>
+		<result property="uSeq" column="u_seq"/>
+		<result property="bTitle" column="b_title"/>
+		<result property="bContents" column="b_contents"/>
+		<result property="bFileOriginNm" column="b_file_origin_nm"/>
+		<result property="bFileModiNm" column="b_file_modi_nm"/>
+		<result property="boardCol" column="boardcol"/>
+		<result property="bCount" column="b_count"/>
+		<result property="cdt" column="cdt"/>
+		<result property="mdt" column="mdt"/>
+		<result property="sysCode" column="sys_code"/>
+	</resultMap>	
+	
+	
+	<!--회원 게시판 쿼리-->
+	<!-- 0815 김선규 회원게시판 전체 조회-->
+	<select id="getBoardList" resultMap="boardMap" resultType="boardVo"  parameterType="boardVo" >
+		<![CDATA[
+			select b_seq
+				 , u_seq
+				 , b_title
+				 , b_contents
+				 , b_file_origin_nm
+				 , b_file_modi_nm
+				 , b_count
+				 , cdt
+				 , mdt
+			from board
+			where sys_code= 'BO0101'
+			order by b_seq desc
+			
+		]]>
+	</select>
+	
+	<!-- 0816 김선규 회원게시판 상세 조회-->
+	<select id="selectDetailBoard" resultMap="boardMap" resultType="boardVo"  parameterType="java.lang.Integer" >
+		<![CDATA[
+			select b_seq
+				 , u_seq
+				 , b_title
+				 , liked
+				 , b_contents
+				 , b_count
+				 , cdt
+				 , mdt
+			from board
+			where b_seq = #{bSeq}
+			
+		]]>
+	</select>
+	
+	<!-- 0817 김선규 회원게시판 게시물 등록 -->
+	<select id="registBoard" resultMap="boardMap" resultType="boardVo"  parameterType="boardVo" >
+		<![CDATA[
+			insert 
+			into 
+			board(u_seq
+				, b_title
+				, b_contents
+				, b_count
+				, cdt
+				, sys_code) 
+			values(#{uSeq}
+				, #{bTitle}
+				, #{bContents}
+				, #{bCount}
+				, now()
+				, 'BO0101')
+			
+		]]>
+	</select>
+	
+	<!-- 0817 김선규 조회수-->
+	<select id="updateView" parameterType="java.lang.Integer" >
+		<![CDATA[
+			update 	board 
+			set 	b_count = b_count + 1 
+			where 	b_seq=#{bSeq}
+			
+		]]>
+	</select>
+	
+	
+	<!-- 0817 김선규 회원게시판 검색 조회-->
+	<select id="searchByText" resultMap="boardMap" resultType="boardVo"  parameterType="java.lang.String" >
+		<![CDATA[
+			select b_seq
+				 , u_seq
+				 , b_title
+				 , b_contents
+				 , b_count
+				 , cdt
+				 , mdt	
+			from board 
+			where (b_title LIKE CONCAT('%', #{text} , '%'))
+			
+		]]>
+	</select>
+	
+	<!-- 0817 김선규 조회수-->
+	<select id="deleteBoard" parameterType="java.lang.Integer" >
+		<![CDATA[
+			delete 
+			from 	board 
+			where 	b_seq = #{bSeq}			
+		]]>
+	</select>
+	
+	
+	<!-- 0817 김선규 좋아요-->
+	<select id="likeBoard" parameterType="java.lang.Integer" >
+		<![CDATA[
+			update 	board 
+			set 	liked = liked + 1 
+			where 	b_seq=#{bSeq}
+			
+		]]>
+	</select>
+	
+	
+	
+	
+	
+	<!--자료 게시판 쿼리-->
+	<!-- 0816 박은빈 자료게시판 전체 조회-->
+	<select id="selectFileBoardList" resultMap="boardMap" resultType="boardVo"  parameterType="boardVo" >
+		<![CDATA[
+			select b_seq
+				 , u_seq
+				 , b_title
+				 , b_contents
+				 , b_file_origin_nm
+				 , b_file_modi_nm
+				 , b_count
+				 , cdt
+				 , mdt
+			from board
+			where sys_code = 'BO0102';
+			
+		]]>
+	</select>
+	
+	<select id="selectFileBoardListOne" resultMap="boardMap" resultType="boardVo"  parameterType="int" >
+		<![CDATA[
+			select b_seq
+				 , u_seq
+				 , b_title
+				 , b_contents
+				 , b_file_origin_nm
+				 , b_file_modi_nm
+				 , b_count
+				 , cdt
+				 , mdt
+				 , liked
+			from board
+			where b_seq = #{bSeq};
+			
+		]]>
+	</select>
+	
+	<insert id="insertFileBoard" parameterType="boardVO">
+		<![CDATA[
+			insert 
+			into 
+			board(u_seq
+				, b_title
+				, b_contents
+				, b_file_origin_nm
+				, b_file_modi_nm
+				, b_count
+				, cdt
+				, sys_code) 
+			values(#{uSeq}
+				, #{bTitle}
+				, #{bContents}
+				, #{bFileOriginNm}
+				, #{bFileModiNm}
+				, #{bCount}
+				, now()
+				, 'BO0102')
+		]]>
+	</insert>
+</mapper>

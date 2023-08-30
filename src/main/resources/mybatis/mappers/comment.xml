@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="comment">
+	<resultMap id="commentMap" type="commentVo">
+		<id property="cSeq" column="c_seq"></id>
+		<result property="bSeq" column="b_seq"/>
+		<result property="uSeq" column="u_seq"/>
+		<result property="cContents" column="c_contents"/>
+		<result property="cdt" column="cdt"/>
+		<result property="mdt" column="mdt"/>
+	</resultMap>	
+	
+	
+	<!-- 0819 김선규 댓글 조회  -->
+	<select id="selectCmt" resultMap="commentMap" resultType="commentVo" parameterType="java.lang.Integer">
+		<![CDATA[
+		select *
+		from comment
+		where b_seq = #{bSeq}
+		order by cdt asc
+		]]>
+	</select>
+	
+	<!-- 0819 김선규 댓글 등록  -->
+	<insert id="insertCmt" parameterType="commentVo" >
+		<![CDATA[
+		insert into comment (b_seq, u_seq, c_contents, cdt) values (#{bSeq}, #{uSeq}, #{cContents}, now())
+		]]>
+	</insert>
+	
+</mapper>
