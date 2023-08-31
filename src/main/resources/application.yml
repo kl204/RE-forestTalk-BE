@@ -37,7 +37,7 @@ spring:
     username: root
     password: Rlatjsrb10!
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://springbootdb.ckwyhhagz0nl.ap-northeast-2.rds.amazonaws.com:3306/forestdb
+    url: jdbc:mysql://springdb.ckwyhhagz0nl.ap-northeast-2.rds.amazonaws.com:3306/forestdb
 #      jdbc:mysql://1.177.113.51:5651/foresttalk?ssl=false?characterEncoding=utf8
 #      username: root
 #      password: 1234
